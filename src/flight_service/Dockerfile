@@ -25,4 +25,4 @@ RUN poetry install
 
 # Run your app
 EXPOSE 8060
-CMD [ "poetry", "run", "uvicorn", "main:app", "--port", "8060" ]
+CMD [ "poetry", "run", "uvicorn", "main:app", "--port", "8060", "--host", "0.0.0.0"  ]

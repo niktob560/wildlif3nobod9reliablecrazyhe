@@ -16,9 +16,13 @@ services:
   apigateway:
     build: './src/apigateway'
     restart: always
+    ports:
+      - "8050:8050"
   ticket_service:
     build: './src/ticket_service'
     restart: always
+    ports:
+      - "8070:8070"
     environment:
       DB_USER: 'program'
       DB_PASSWORD: 'test'
@@ -27,6 +31,8 @@ services:
   flight_service:
     build: './src/flight_service'
     restart: always
+    ports:
+      - "8060:8060"
     environment:
       DB_USER: 'program'
       DB_PASSWORD: 'test'
@@ -35,6 +41,8 @@ services:
   bonus_service:
     build: './src/bonus_service'
     restart: always
+    ports:
+      - "8080:8080"
     environment:
       DB_USER: 'program'
       DB_PASSWORD: 'test'
