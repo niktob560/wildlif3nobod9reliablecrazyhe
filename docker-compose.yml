@@ -17,7 +17,11 @@ services:
     build: './src/apigateway'
     restart: always
     ports:
-      - "8050:8050"
+      - "8080:8080"
+    environment:
+      BONUS_BASEURL: 'http://bonus_service:8050/api/v1'
+      TICKET_BASEURL: 'http://ticket_service:8070/api/v1'
+      FLIGHT_BASEURL: 'http://flight_service:8060/api/v1'
   ticket_service:
     build: './src/ticket_service'
     restart: always
@@ -42,7 +46,7 @@ services:
     build: './src/bonus_service'
     restart: always
     ports:
-      - "8080:8080"
+      - "8050:8050"
     environment:
       DB_USER: 'program'
       DB_PASSWORD: 'test'

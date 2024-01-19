@@ -26,4 +26,4 @@ if __name__ == '__main__':
 
     app.add_routes(manage_routes)
 
-    web.run_app(app, port=8050)
+    web.run_app(app, port=8080)

@@ -116,7 +116,7 @@ async def startup_event():
 
     async with pool.acquire() as conn:
         async with conn.cursor() as cur:
-            cur.execute('''
+            await cur.execute('''
             CREATE TABLE IF NOT EXISTS ticket
 (
     id            SERIAL PRIMARY KEY,

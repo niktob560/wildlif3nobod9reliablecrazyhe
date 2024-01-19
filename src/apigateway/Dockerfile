@@ -22,7 +22,7 @@ COPY . /app/src
 ENV APP_ENV development
 
 # Exposing Ports
-EXPOSE 8050
+EXPOSE 8080
 
 # Setting Persistent data
 VOLUME ["/app-data"]
