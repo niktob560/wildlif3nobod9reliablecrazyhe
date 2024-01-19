@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "bonus-service"
+version = "0.1.0"
+description = ""
+authors = ["nikto_b <nikto_b@newt.team>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "0.109.0"
+uvicorn = "0.26.0"
+watchfiles = "0.21.0"
+aiopg = "^1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

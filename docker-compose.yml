@@ -13,6 +13,33 @@ services:
       - ./postgres/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
+  apigateway:
+    build: './src/apigateway'
+    restart: always
+  ticket_service:
+    build: './src/ticket_service'
+    restart: always
+    environment:
+      DB_USER: 'program'
+      DB_PASSWORD: 'test'
+      DB_HOST: 'postgres'
+      DB_NAME: 'tickets'
+  flight_service:
+    build: './src/flight_service'
+    restart: always
+    environment:
+      DB_USER: 'program'
+      DB_PASSWORD: 'test'
+      DB_HOST: 'postgres'
+      DB_NAME: 'flights'
+  bonus_service:
+    build: './src/bonus_service'
+    restart: always
+    environment:
+      DB_USER: 'program'
+      DB_PASSWORD: 'test'
+      DB_HOST: 'postgres'
+      DB_NAME: 'privileges'
 
 # TODO добавить сервисы
 
