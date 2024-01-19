@@ -230,7 +230,7 @@ async def revoke_ticket(request: web.Request):
     async with aiohttp.ClientSession() as session:
         async with session.delete(f'{bonus_baseurl}/privilege/{ticket_uid}') as resp:
             if resp.status >= 400:
-                return web.Response(status=404)
+                return web.Response(status=204)
             _ = await resp.json()
 
     ticket_baseurl = os.environ.get('TICKET_BASEURL', 'http://0.0.0.0:8070/api/v1')
