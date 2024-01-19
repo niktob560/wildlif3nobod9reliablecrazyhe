@@ -20,6 +20,7 @@ manage_router = APIRouter(prefix="/manage")
 async def healthcheck():
     return fastapi.responses.Response()
 
+
 app.include_router(manage_router)
 
 
@@ -160,3 +161,18 @@ async def startup_event():
     price           INT                      NOT NULL
 );
             ''')
+
+            await cur.execute('INSERT INTO airport '
+                              ' (name, city, country) '
+                              'VALUES '
+                              ' (%s, %s, %s)', ('Шереметьево', 'Москва', 'Россия'))
+
+            await cur.execute('INSERT INTO airport '
+                              ' (name, city, country) '
+                              'VALUES '
+                              ' (%s, %s, %s)', ('Пулково', 'Санкт-Петербург', 'Россия'))
+
+            await cur.execute('INSERT INTO flight '
+                              '   (flight_number, datetime, from_airport_id, to_airport_id, price) '
+                              'VALUES '
+                              '   (%s, %s, %s, %s, %s);', ('AFL031', '2021-10-08 20:00', 2, 1, 1500))

@@ -20,15 +20,15 @@ async def get_flight_by_number(flight_number: str) -> dict:
 
 @routes.get('/flights')
 async def get_flights(request: web.Request):
-    page = request.rel_url.query.get('page')
-    size = request.rel_url.query.get('size')
+    page = int(request.rel_url.query.get('page'))
+    size = int(request.rel_url.query.get('size'))
     flight_baseurl = os.environ.get('FLIGHT_BASEURL', 'http://0.0.0.0:8060/api/v1')
     async with aiohttp.ClientSession() as session:
         u = f'{flight_baseurl}/flights'
         if page is not None or size is not None:
             u += '?'
         if page is not None:
-            u += f'page={page}'
+            u += f'page={page - 1}'
             if size is not None:
                 u += '&'
         if size is not None:
@@ -116,8 +116,20 @@ async def get_me(request: web.Request):
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.get(f'{ticket_baseurl}/tickets') as resp:
             tickets = await resp.json()
+    dat = []
+    for t in tickets:
+        flight_data = await get_flight_by_number(t['flight_number'])
+        dat.append({
+            "ticketUid": t['ticket_uid'],
+            "flightNumber": t['flight_number'],
+            'fromAirport': flight_data['fromAirport'],
+            'toAirport': flight_data['toAirport'],
+            'date': flight_data['date'],
+            "price": t['price'],
+            "status": t['status']
+        })
     return aiohttp.web.json_response({
-        'tickets': tickets,
+        'tickets': dat,
         'privilege': {
             "balance": privilege_data['balance'],
             "status": privilege_data['status']
@@ -216,7 +228,18 @@ async def get_ticket(request: web.Request):
     ticket_baseurl = os.environ.get('TICKET_BASEURL', 'http://0.0.0.0:8070/api/v1')
     async with aiohttp.ClientSession(headers={'X-User-Name': user_name}) as session:
         async with session.get(f'{ticket_baseurl}/tickets/{ticket_uid}') as resp:
-            return aiohttp.web.json_response(await resp.json())
+            dat = await resp.json()
+
+    flight_data = await get_flight_by_number(dat['flight_number'])
+    return aiohttp.web.json_response({
+        "ticketUid": dat['ticket_uid'],
+        "flightNumber": dat['flight_number'],
+        'fromAirport': flight_data['fromAirport'],
+        'toAirport': flight_data['toAirport'],
+        'date': flight_data['date'],
+        "price": dat['price'],
+        "status": dat['status']
+    })
 
 
 @routes.delete('/tickets/{ticketUid}')
